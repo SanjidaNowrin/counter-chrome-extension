@@ -1,23 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
+import "./App.css";
 
 function App() {
+  const [count, setCount] = useState(0);
+
+  const countingPlus = () => {
+    const newCount = count + 1;
+    setCount(newCount);
+    sessionStorage.setItem("count", newCount);
+  };
+  const countingMinus = () => {
+    const newCount = count - 1;
+    setCount(newCount);
+    sessionStorage.setItem("count", newCount);
+  };
+
+  useEffect(() => {
+    const items = JSON.parse(sessionStorage.getItem("count"));
+    if (items) {
+      setCount(items);
+    }
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="main">
+      <div className="box">
+        <h1 className={count > 0 ? "positive" : count < 0 ? "negative" : null}>
+          {count}
+        </h1>
+        <div className="btn_position">
+          <button className="button__wrapper" onClick={countingMinus}>
+            -
+          </button>
+          <button className="button__wrapper" onClick={countingPlus}>
+            +
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
